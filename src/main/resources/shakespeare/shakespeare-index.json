@@ -1,0 +1,48 @@
+{
+  "mappings" : {
+    "_default_": {
+      "dynamic": "strict",
+      "_all": {
+        "enabled": true
+      },
+      "properties": {
+        "speaker": {
+          "type": "keyword"
+        },
+        "play_name": {
+          "type": "keyword"
+        },
+        "line_id": {
+          "type": "integer"
+        },
+        "speech_number": {
+          "type": "integer"
+        },
+        "line_number": {
+          "type": "keyword"
+        },
+        "text_entry": {
+          "type": "text"
+        }
+      }
+    },
+    "act" : {
+      "dynamic": "strict",
+      "_all": {
+        "enabled": false
+      }
+    },
+    "scene": {
+      "dynamic": "strict",
+      "_all": {
+        "enabled": false
+      }
+    },
+    "line" : {
+      "dynamic": "strict",
+      "_all": {
+        "enabled": false
+      }
+    }
+  }
+}
