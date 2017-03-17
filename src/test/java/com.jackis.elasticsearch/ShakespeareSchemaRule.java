@@ -13,11 +13,11 @@ import org.junit.runners.model.Statement;
 /**
  * Rule to create/delete elastic search schema.
  */
-public class ElasticSearchSchemaRule implements TestRule {
+public class ShakespeareSchemaRule implements TestRule {
 
     private int httpPort;
 
-    public ElasticSearchSchemaRule(final int httpPort) {
+    public ShakespeareSchemaRule(final int httpPort) {
         this.httpPort = httpPort;
     }
 
@@ -40,10 +40,10 @@ public class ElasticSearchSchemaRule implements TestRule {
         RestClient client = ClientFactory.getClient(httpPort);
 
         final File indexFile = Paths.get(
-                ElasticSearchSchemaRule.class.getResource("/shakespeare/shakespeare-index.json").toURI()).toFile();
+                ShakespeareSchemaRule.class.getResource("/shakespeare/shakespeare-index.json").toURI()).toFile();
 
         final File dataFile = Paths.get(
-                ElasticSearchSchemaRule.class.getResource("/shakespeare/shakespeare-data.json").toURI()).toFile();
+                ShakespeareSchemaRule.class.getResource("/shakespeare/shakespeare-data.json").toURI()).toFile();
 
         client.performRequest("PUT", "/shakespeare", Collections.emptyMap(),
                 EntityBuilder.create().setFile(indexFile).build());

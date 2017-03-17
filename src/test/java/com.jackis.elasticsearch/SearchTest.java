@@ -3,9 +3,14 @@ package com.jackis.elasticsearch;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collections;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.http.client.entity.EntityBuilder;
+import org.apache.http.entity.ContentType;
 import org.apache.http.nio.entity.NStringEntity;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
@@ -15,7 +20,8 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
 
-import com.jackis.elasticsearch.model.Play;
+import com.jackis.elasticsearch.model.products.Product;
+import com.jackis.elasticsearch.model.shakespeare.Play;
 import com.jackis.elasticsearch.response.search.SearchResult;
 import com.jackis.elasticsearch.response.search.SearchResultReader;
 
@@ -25,10 +31,12 @@ import com.jackis.elasticsearch.response.search.SearchResultReader;
 public class SearchTest {
 
     private static ElasticsearchNodeRule NODE_RULE = new ElasticsearchNodeRule("testcluster");
-    private static ElasticSearchSchemaRule SCHEMA_RULE = new ElasticSearchSchemaRule(NODE_RULE.getHttpPort());
+    private static ShakespeareSchemaRule SHAKESPEARE_SCHEMA_RULE = new ShakespeareSchemaRule(NODE_RULE.getHttpPort());
+    private static ProductsSchemaRule PRODUCT_SCHEMA_RULE = new ProductsSchemaRule(NODE_RULE.getHttpPort());
 
     @ClassRule
-    public static RuleChain RULE_CHAIN = RuleChain.outerRule(NODE_RULE).around(SCHEMA_RULE);
+    public static RuleChain RULE_CHAIN = RuleChain.outerRule(NODE_RULE).around(SHAKESPEARE_SCHEMA_RULE).around(
+            PRODUCT_SCHEMA_RULE);
 
     private RestClient client;
 
@@ -37,6 +45,9 @@ public class SearchTest {
         client = ClientFactory.getClient(NODE_RULE.getHttpPort());
 
         client.performRequest("POST", "/shakespeare/_refresh", Collections.emptyMap(),
+                EntityBuilder.create().setText("").build());
+
+        client.performRequest("POST", "/products/_refresh", Collections.emptyMap(),
                 EntityBuilder.create().setText("").build());
     }
 
@@ -66,6 +77,24 @@ public class SearchTest {
         assertTrue("There is no document with word \"yourself\" in the search index",
                 searchResult.getSearchHits().getSearchHit().stream()
                         .anyMatch(line -> line.getSource().getTextEntry().contains("yourselves")));
+
+    }
+
+    @Test
+    public void testNestedQuerySearch() throws URISyntaxException, IOException {
+        final Response response = client.performRequest("POST", "/products/product/_search", Collections.emptyMap(),
+                EntityBuilder.create().setContentType(ContentType.APPLICATION_JSON).setText(new String(
+                        Files.readAllBytes(Paths.get(
+                                SearchTest.class.getResource("/query/nestedSearch.json").toURI()))))
+                        .build());
+
+        final SearchResult<Product> searchResult = new SearchResultReader<>(Product.class).readRawResult(
+                response.getEntity().getContent());
+
+        assertTrue("Searched product was not found", searchResult.getSearchHits().getSearchHit().stream().filter(
+                productSearchHit -> "Scarf".equals(productSearchHit.getSource().getName())).findFirst()
+                .isPresent());
+
 
     }
 }

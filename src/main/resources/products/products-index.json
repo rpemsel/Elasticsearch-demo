@@ -1,0 +1,26 @@
+{
+  "mappings": {
+    "product": {
+      "dynamic": "strict",
+      "properties": {
+        "name": {
+          "type": "keyword"
+        },
+        "category": {
+          "type": "keyword"
+        },
+        "dynamic_attributes": {
+          "type": "nested",
+          "properties": {
+            "key": {
+              "type": "keyword"
+            },
+            "value": {
+              "type": "keyword"
+            }
+          }
+        }
+      }
+    }
+  }
+}

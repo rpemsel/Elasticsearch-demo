@@ -1,4 +1,4 @@
-package com.jackis.elasticsearch.model;
+package com.jackis.elasticsearch.model.shakespeare;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

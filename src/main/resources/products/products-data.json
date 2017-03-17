@@ -1,0 +1,8 @@
+{"index":{"_index":"products","_type":"product","_id":1234}}
+{"name": "Super Dress", "category": ["fashion", "women"], "dynamic_attributes": [{ "key": "color", "value": ["red"]}, { "key": "sizes", "value": ["S", "M","L"]}]}
+{"index":{"_index":"products","_type":"product","_id":2345}}
+{"name": "Scarf", "category": ["fashion", "Accessoires", "women"], "dynamic_attributes": [{ "key": "length", "value": ["1.5m"]}, { "key": "color", "value": ["yellow"]}]}
+{"index":{"_index":"products","_type":"product","_id":3456}}
+{"name": "Casual Shirt", "category": ["fashion", "men"], "dynamic_attributes": [{ "key": "color", "value": ["white"]}, { "key": "sizes", "value": ["S", "M", "L", "XL"]}]}
+{"index":{"_index":"products","_type":"product","_id":4567}}
+{"name": "Skinny Jeans", "category": ["fashion", "jeans", "men"], "dynamic_attributes": [{ "key": "color", "value": ["black"]}, { "key": "sizes", "value": ["30", "32", "34", "36"]}, { "key": "cut", "value": "tight"}]}

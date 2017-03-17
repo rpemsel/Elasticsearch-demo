@@ -1,0 +1,24 @@
+{
+  "query": {
+    "nested": {
+      "path": "dynamic_attributes",
+      "score_mode": "avg",
+      "query": {
+        "bool" : {
+          "must": [
+            {
+              "term": {
+                "dynamic_attributes.key": "color"
+              }
+            },
+            {
+              "term": {
+                "dynamic_attributes.value": "yellow"
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

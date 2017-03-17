@@ -1,0 +1,37 @@
+{
+  "query": {
+    "term": {
+      "category": "men"
+    }
+  },
+  "size": 0,
+  "aggregations": {
+    "dynamic_attributes": {
+      "nested": {
+        "path": "dynamic_attributes"
+      },
+      "aggs": {
+        "keys": {
+          "terms": {
+            "field": "dynamic_attributes.key",
+            "size": 10000,
+            "order": {
+              "_term": "asc"
+            }
+          },
+          "aggs": {
+            "values": {
+              "terms": {
+                "field": "dynamic_attributes.value",
+                "size": 10000,
+                "order": {
+                  "_term": "asc"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
