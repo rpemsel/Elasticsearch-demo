@@ -22,6 +22,7 @@ import org.junit.rules.RuleChain;
 
 import com.jackis.elasticsearch.model.products.Product;
 import com.jackis.elasticsearch.model.shakespeare.Play;
+import com.jackis.elasticsearch.response.search.SearchHit;
 import com.jackis.elasticsearch.response.search.SearchResult;
 import com.jackis.elasticsearch.response.search.SearchResultReader;
 
@@ -91,10 +92,23 @@ public class SearchTest {
         final SearchResult<Product> searchResult = new SearchResultReader<>(Product.class).readRawResult(
                 response.getEntity().getContent());
 
-        assertTrue("Searched product was not found", searchResult.getSearchHits().getSearchHit().stream().filter(
-                productSearchHit -> "Scarf".equals(productSearchHit.getSource().getName())).findFirst()
-                .isPresent());
+        assertTrue("Searched product was not found", searchResult.getSearchHits().getSearchHit().stream().anyMatch(
+                productSearchHit -> "Scarf".equals(productSearchHit.getSource().getName())));
 
+    }
 
+    @Test
+    public void testRegExpQuery() throws IOException, URISyntaxException {
+        final Response response = client.performRequest("POST", "/shakespeare/line/_search", Collections.emptyMap(),
+                EntityBuilder.create().setContentType(ContentType.APPLICATION_JSON).setText(new String(
+                        Files.readAllBytes(
+                                Paths.get(SearchTest.class.getResource("/query/regexpSearch.json").toURI())))).build());
+
+        final SearchResult<Play> searchResult = new SearchResultReader<>(Play.class).readRawResult(
+                response.getEntity().getContent());
+
+        searchResult.getSearchHits().getSearchHit().stream().map(SearchHit::getSource).forEach(
+                play -> assertTrue("Found line does not include the term \"furious\".",
+                        play.getTextEntry().contains("furious")));
     }
 }
