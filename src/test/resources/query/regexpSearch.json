@@ -1,7 +1,7 @@
 {
   "query": {
     "regexp": {
-      "text_entry": ".*furious.*"
+      "description": ".*k awesome.*"
     }
   }
 }

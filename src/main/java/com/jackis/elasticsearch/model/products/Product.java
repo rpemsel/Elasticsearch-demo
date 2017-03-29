@@ -10,6 +10,7 @@ public class Product {
     private Set<String> categories;
     @JsonProperty("dynamic_attributes")
     private Set<DynamicAttribute> dynamicAttributes;
+    private String description;
 
     public String getName() {
         return name;
@@ -31,7 +32,16 @@ public class Product {
         return dynamicAttributes;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public void setDynamicAttributes(Set<DynamicAttribute> dynamicAttributes) {
         this.dynamicAttributes = dynamicAttributes;
+
     }
 }

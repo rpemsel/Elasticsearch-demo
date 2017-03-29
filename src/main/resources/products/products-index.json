@@ -1,4 +1,21 @@
 {
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "partial_match_analyzer": {
+          "tokenizer": "standard",
+          "filter": [ "ngram_filter", "lowercase" ]
+        }
+      },
+      "filter": {
+        "ngram_filter": {
+          "type": "nGram",
+          "min_gram": 3,
+          "max_gram": 3
+        }
+      }
+    }
+  },
   "mappings": {
     "product": {
       "dynamic": "strict",
@@ -17,6 +34,15 @@
             },
             "value": {
               "type": "keyword"
+            }
+          }
+        },
+        "description": {
+          "type": "keyword",
+          "fields": {
+            "analyzed": {
+              "type" : "text",
+              "analyzer": "partial_match_analyzer"
             }
           }
         }

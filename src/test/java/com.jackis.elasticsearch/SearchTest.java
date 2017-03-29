@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.Collections;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.nio.entity.NStringEntity;
@@ -99,16 +100,46 @@ public class SearchTest {
 
     @Test
     public void testRegExpQuery() throws IOException, URISyntaxException {
-        final Response response = client.performRequest("POST", "/shakespeare/line/_search", Collections.emptyMap(),
+        final Response response = client.performRequest("POST", "/products/product/_search", Collections.emptyMap(),
                 EntityBuilder.create().setContentType(ContentType.APPLICATION_JSON).setText(new String(
                         Files.readAllBytes(
                                 Paths.get(SearchTest.class.getResource("/query/regexpSearch.json").toURI())))).build());
 
-        final SearchResult<Play> searchResult = new SearchResultReader<>(Play.class).readRawResult(
+        final SearchResult<Product> searchResult = new SearchResultReader<>(Product.class).readRawResult(
                 response.getEntity().getContent());
 
         searchResult.getSearchHits().getSearchHit().stream().map(SearchHit::getSource).forEach(
-                play -> assertTrue("Found line does not include the term \"furious\".",
-                        play.getTextEntry().contains("furious")));
+                product -> assertTrue("Found line does not include the term \"awesome\".",
+                        product.getDescription().contains("awesome")));
+    }
+
+    @Test
+    public void testWildcardQuery() throws IOException, URISyntaxException {
+        final Response response = client.performRequest("POST", "/products/product/_search", Collections.emptyMap(),
+                EntityBuilder.create().setContentType(ContentType.APPLICATION_JSON).setText(new String(
+                        Files.readAllBytes(
+                                Paths.get(SearchTest.class.getResource("/query/wildcardSearch.json").toURI())))).build());
+
+        final SearchResult<Product> searchResult = new SearchResultReader<>(Product.class).readRawResult(
+                response.getEntity().getContent());
+
+        searchResult.getSearchHits().getSearchHit().stream().map(SearchHit::getSource).forEach(
+                product -> assertTrue("Found line does not include the term \"awesome\".",
+                        product.getDescription().contains("awesome")));
+    }
+
+    @Test
+    public void ngramSearchTest () throws IOException, URISyntaxException {
+        final Response response = client.performRequest("POST", "/products/product/_search", Collections.emptyMap(),
+                EntityBuilder.create().setContentType(ContentType.APPLICATION_JSON).setText(new String(
+                        Files.readAllBytes(Paths.get(SearchTest.class.getResource("/query/ngramSearch.json").toURI()))))
+                        .build());
+
+        final SearchResult<Product> searchResult = new SearchResultReader<>(Product.class).readRawResult(
+                response.getEntity().getContent());
+
+        searchResult.getSearchHits().getSearchHit().stream().map(SearchHit::getSource).forEach(
+                product -> assertTrue("Found line does not include the term \"awesome\".",
+                        product.getDescription().contains("awesome")));
     }
 }

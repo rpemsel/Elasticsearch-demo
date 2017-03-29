@@ -1,8 +1,8 @@
 {"index":{"_index":"products","_type":"product","_id":1234}}
-{"name": "Super Dress", "category": ["fashion", "women"], "dynamic_attributes": [{ "key": "color", "value": ["red"]}, { "key": "sizes", "value": ["S", "M","L"]}]}
+{"name": "Super Dress", "category": ["fashion", "women"], "dynamic_attributes": [{ "key": "color", "value": ["red"]}, { "key": "sizes", "value": ["S", "M","L"]}], "description": "Look awesome this summer and buy this beautiful dress."}
 {"index":{"_index":"products","_type":"product","_id":2345}}
-{"name": "Scarf", "category": ["fashion", "Accessoires", "women"], "dynamic_attributes": [{ "key": "length", "value": ["1.5m"]}, { "key": "color", "value": ["yellow"]}]}
+{"name": "Scarf", "category": ["fashion", "Accessoires", "women"], "dynamic_attributes": [{ "key": "length", "value": ["1.5m"]}, { "key": "color", "value": ["yellow"]}], "description": "Good for cold winterdays but also usable for cold spring days and always in style."}
 {"index":{"_index":"products","_type":"product","_id":3456}}
-{"name": "Casual Shirt", "category": ["fashion", "men"], "dynamic_attributes": [{ "key": "color", "value": ["white"]}, { "key": "sizes", "value": ["S", "M", "L", "XL"]}]}
+{"name": "Casual Shirt", "category": ["fashion", "men"], "dynamic_attributes": [{ "key": "color", "value": ["white"]}, { "key": "sizes", "value": ["S", "M", "L", "XL"]}], "descpription": "A shirt for any occasion, Fridays at work or at your friend's barbecue."}
 {"index":{"_index":"products","_type":"product","_id":4567}}
-{"name": "Skinny Jeans", "category": ["fashion", "jeans", "men"], "dynamic_attributes": [{ "key": "color", "value": ["black"]}, { "key": "sizes", "value": ["30", "32", "34", "36"]}, { "key": "cut", "value": "tight"}]}
+{"name": "Skinny Jeans", "category": ["fashion", "jeans", "men"], "dynamic_attributes": [{ "key": "color", "value": ["black"]}, { "key": "sizes", "value": ["30", "32", "34", "36"]}, { "key": "cut", "value": "tight"}], "description": "Super skinny jeans looking tight on you, sometimes a litte too much."}
